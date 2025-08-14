@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - AutoMotoXweb</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --secondary: #003366;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --gray: #6c757d;
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --card-bg: #ffffff;
+            --section-bg: #f8f9fa;
+            --header-bg: #ffffff;
+            --footer-bg: #1a1a1a;
+            --hero-bg: linear-gradient(135deg, #003366 0%, #001a33 100%);
+        }
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --primary: #FF6B00;
+            --secondary: #4d94ff;
+            --dark: #f8f9fa;
+            --light: #1a1a1a;
+            --success: #28a745;
+            --gray: #adb5bd;
+            --bg-color: #121212;
+            --text-color: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --section-bg: #2a2a2a;
+            --header-bg: #1e1e1e;
+            --footer-bg: #0d0d0d;
+            --hero-bg: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 80px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+            height: 80px;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            height: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .logo i {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 30px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #e55a00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Theme toggle button */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+        
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .mobile-menu-btn:hover {
+            color: var(--primary);
+        }
+        
+        /* Page Title */
+        .page-title {
+            background: var(--hero-bg);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        
+        .page-title::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-title p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 0;
+            background-color: var(--section-bg);
+            transition: background-color 0.3s;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .contact-form {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
+        }
+        
+        .contact-form h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
+        }
+        
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-card h3 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .info-item i {
+            color: var(--primary);
+            margin-right: 15px;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .info-item p {
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .info-item p span {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Map Section */
+        .map-section {
+            padding: 0 0 80px;
+        }
+        
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: 400px;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            color: white;
+            padding: 70px 0 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-column p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            opacity: 1;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 120px;
+            }
+            
+            header {
+                height: auto;
+                padding: 10px 0;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+            
+            nav {
+                width: 100%;
+                margin-top: 15px;
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-form {
+                padding: 25px;
+            }
+            
+            .info-card {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding-top: 140px;
+            }
+            
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-form, .info-card {
+                padding: 20px;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                AutoMotoXweb
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index.html#features">Recursos</a></li>
+                    <li><a href="index.html#testimonials">Depoimentos</a></li>
+                    <li><a href="index.html#benefits">Benefícios</a></li>
+                    <li><a href="index.html#cta">Preço</a></li>
+                    <li><a href="#" class="btn">Experimente Grátis</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Page Title -->
+    <section class="page-title">
+        <div class="container">
+            <h1>Entre em Contato</h1>
+            <p>Estamos à disposição para tirar suas dúvidas e ajudar sua oficina a crescer</p>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-form">
+                    <h2>Envie-nos uma mensagem</h2>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nome Completo</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Assunto</label>
+                            <input type="text" id="subject" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <textarea id="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" id="submit-btn">
+                            Enviar Mensagem
+                            <span class="spinner" id="spinner"></span>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3><i class="fas fa-map-marker-alt"></i> Endereço</h3>
+                        <div class="info-item">
+                            <i class="fas fa-road"></i>
+                            <p><span>Logradouro</span> Avenida Castelo Branco</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-hashtag"></i>
+                            <p><span>Número</span> 199</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-home"></i>
+                            <p><span>Bairro</span> Vila Vitória</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-city"></i>
+                            <p><span>Cidade</span> Imperatriz - MA</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-mail-bulk"></i>
+                            <p><span>CEP</span> 65918-003</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-phone-alt"></i> Contato</h3>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <p><span>Telefone</span> (63) 9 9225-9154</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p><span>E-mail</span> natal.santiago.automotoxweb@gmail.com</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <p><span>WhatsApp</span> (63) 9 9225-9154</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-clock"></i> Horário de Funcionamento</h3>
+                        <div class="info-item">
+                            <i class="far fa-calendar"></i>
+                            <p><span>Segunda a Sexta</span> 08:00 - 18:00</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="far fa-calendar"></i>
+                            <p><span>Sábado</span> 08:00 - 12:00</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-info-circle"></i>
+                            <p><span>Atendimento Online</span> 24/7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="map-container">
+                <!-- SUBSTITUA ESTE IFRAME PELO CÓDIGO REAL DO GOOGLE MAPS -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.4028974285183!2d-44.85541808524435!3d-5.519899796088717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x92e38d5c5e5e3e3f%3A0x4e5e5e5e5e5e5e5e!2sAv.%20Castelo%20Branco%2C%20199%20-%20Vila%20Vit%C3%B3ria%2C%20Imperatriz%20-%20MA%2C%2065918-003!5e0!3m2!1spt-BR!2sbr!4v1620000000000!5m2!1spt-BR!2sbr" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AutoMotoXweb</h3>
+                    <p>O sistema mais completo para gestão de oficinas automotivas, autopeças e centros automotivos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Página Inicial</a></li>
+                        <li><a href="index.html#features">Recursos</a></li>
+                        <li><a href="index.html#testimonials">Depoimentos</a></li>
+                        <li><a href="index.html#benefits">Benefícios</a></li>
+                        <li><a href="index.html#cta">Planos</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Tutoriais</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (63) 9 9225-9154</li>
+                        <li><i class="fas fa-envelope"></i> natal.santiago.automotoxweb@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Avenida Castelo Branco, 199, Vila Vitória, Imperatriz - MA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 AutoMotoXweb. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Inicializar o EmailJS com sua chave pública
+        emailjs.init('pglVpdoMlK_TRMk-r');
+        
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) {
+                mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const spinner = document.getElementById('spinner');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show spinner
+            spinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Log para depuração
+            console.log('Enviando formulário...');
+            console.log('Nome:', name);
+            console.log('Email:', email);
+            console.log('Telefone:', phone);
+            console.log('Assunto:', subject);
+            console.log('Mensagem:', message);
+            
+            // 1. Enviar auto-resposta para o usuário
+            const autoReplyParams = {
+                to_email: email,
+                from_name: 'AutoMotoXweb',
+                user_name: name,
+                user_subject: subject
+            };
+            
+            console.log('Parâmetros da auto-resposta:', autoReplyParams);
+            
+            // 2. Enviar dados do formulário para o email natal.santiago.automotoxweb@gmail.com
+            const formDataParams = {
+                to_email: 'natal.santiago.automotoxweb@gmail.com',
+                from_name: name,
+                from_email: email,
+                phone: phone,
+                subject: subject,
+                message: message,
+                reply_to: email
+            };
+            
+            console.log('Parâmetros do formulário:', formDataParams);
+            
+            // Enviar auto-resposta para o usuário
+            emailjs.send('service_wq6d36q', 'template_8kbi8qb', autoReplyParams)
+                .then(function(response) {
+                    console.log('Auto-resposta enviada com sucesso:', response);
+                    
+                    // Enviar dados do formulário para o email natal.santiago.automotoxweb@gmail.com
+                    return emailjs.send('service_wq6d36q', 'template_formulario', formDataParams);
+                })
+                .then(function(response) {
+                    console.log('Dados do formulário enviados com sucesso:', response);
+                    
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                    
+                    // Show success message with SweetAlert
+                    Swal.fire({
+                        title: 'Mensagem Enviada!',
+                        text: 'Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FF6B00'
+                    }).then((result) => {
+                        // Redirect to home page after user clicks OK
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.html';
+                        }
+                    });
+                    
+                    // Reset form
+                    contactForm.reset();
+                })
+                .catch(function(error) {
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                    
+                    console.error('Erro detalhado do EmailJS:', error);
+                    
+                    // Mostrar detalhes do erro para depuração
+                    if (error.text) {
+                        console.error('Texto do erro:', error.text);
+                    }
+                    
+                    if (error.status) {
+                        console.error('Status do erro:', error.status);
+                    }
+                    
+                    // Show error message with SweetAlert
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FF6B00'
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
