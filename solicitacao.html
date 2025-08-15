@@ -1031,35 +1031,40 @@
                 body: formData
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Erro ao enviar formulário');
-                }
-            })
-            .then(data => {
                 // Hide spinner
                 spinner.style.display = 'none';
                 submitBtn.disabled = false;
                 
-                // Show success message with SweetAlert
-                Swal.fire({
-                    title: 'Solicitação Enviada!',
-                    text: 'Sua solicitação foi enviada com sucesso. Entraremos em contato em até 24 horas úteis.',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#FF6B00'
-                }).then((result) => {
-                    // Redirect to home page after user clicks OK
-                    if (result.isConfirmed) {
-                        window.location.href = 'index.html';
-                    }
-                });
-                
-                // Reset form
-                solicitationForm.reset();
-                fileName.textContent = 'Nenhum arquivo selecionado';
-                cpfCnpjInput.classList.remove('is-invalid');
+                // Verificar se a resposta foi bem-sucedida
+                if (response.ok) {
+                    // Show success message with SweetAlert
+                    Swal.fire({
+                        title: 'Solicitação Enviada!',
+                        text: 'Sua solicitação foi enviada com sucesso. Entraremos em contato em até 24 horas úteis.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FF6B00'
+                    }).then((result) => {
+                        // Redirect to home page after user clicks OK
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.html';
+                        }
+                    });
+                    
+                    // Reset form
+                    solicitationForm.reset();
+                    fileName.textContent = 'Nenhum arquivo selecionado';
+                    cpfCnpjInput.classList.remove('is-invalid');
+                } else {
+                    // Show error message with SweetAlert
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente mais tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#FF6B00'
+                    });
+                }
             })
             .catch(error => {
                 // Hide spinner
