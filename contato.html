@@ -278,6 +278,102 @@
             resize: vertical;
         }
         
+        /* Phone Input Styles */
+        .phone-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .country-selector {
+            position: relative;
+            margin-right: 10px;
+            z-index: 10;
+        }
+        
+        .selected-country {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: border-color 0.3s;
+            min-width: 90px;
+        }
+        
+        .selected-country:hover {
+            border-color: var(--primary);
+        }
+        
+        .selected-country .flag {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+        
+        .selected-country .code {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .selected-country i {
+            margin-left: auto;
+            font-size: 12px;
+        }
+        
+        .country-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .country-dropdown.active {
+            display: block;
+        }
+        
+        .country-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .country-item:hover {
+            background-color: rgba(255, 107, 0, 0.1);
+        }
+        
+        .country-item .flag {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .country-item .country-name {
+            flex: 1;
+            color: var(--text-color);
+        }
+        
+        .country-item .country-code {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .phone-number {
+            flex: 1;
+        }
+        
         .contact-info {
             display: flex;
             flex-direction: column;
@@ -509,6 +605,20 @@
             .info-card {
                 padding: 20px;
             }
+            
+            .phone-input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .country-selector {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .selected-country {
+                justify-content: center;
+            }
         }
         
         @media (max-width: 576px) {
@@ -585,7 +695,19 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Telefone</label>
-                            <input type="tel" id="phone" name="phone" class="form-control" required>
+                            <div class="phone-input-container">
+                                <div class="country-selector">
+                                    <div class="selected-country" id="selected-country">
+                                        <span class="flag">🇧🇷</span>
+                                        <span class="code">+55</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="country-dropdown" id="country-dropdown">
+                                        <!-- Lista de países será preenchida via JavaScript -->
+                                    </div>
+                                </div>
+                                <input type="tel" id="phone" name="phone" class="form-control phone-number" placeholder="(XX) 9 XXXX-XXXX" required>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="subject">Assunto</label>
@@ -729,6 +851,108 @@
     </footer>
     
     <script>
+        // Lista de países com bandeiras e códigos
+        const countries = [
+            { name: 'Brasil', code: '+55', flag: '🇧🇷' },
+            { name: 'Estados Unidos', code: '+1', flag: '🇺🇸' },
+            { name: 'Reino Unido', code: '+44', flag: '🇬🇧' },
+            { name: 'Portugal', code: '+351', flag: '🇵🇹' },
+            { name: 'Espanha', code: '+34', flag: '🇪🇸' },
+            { name: 'França', code: '+33', flag: '🇫🇷' },
+            { name: 'Alemanha', code: '+49', flag: '🇩🇪' },
+            { name: 'Itália', code: '+39', flag: '🇮🇹' },
+            { name: 'Japão', code: '+81', flag: '🇯🇵' },
+            { name: 'China', code: '+86', flag: '🇨🇳' },
+            { name: 'Argentina', code: '+54', flag: '🇦🇷' },
+            { name: 'Canadá', code: '+1', flag: '🇨🇦' },
+            { name: 'Austrália', code: '+61', flag: '🇦🇺' },
+            { name: 'México', code: '+52', flag: '🇲🇽' },
+            { name: 'Índia', code: '+91', flag: '🇮🇳' },
+            { name: 'Rússia', code: '+7', flag: '🇷🇺' },
+            { name: 'Coreia do Sul', code: '+82', flag: '🇰🇷' },
+            { name: 'Países Baixos', code: '+31', flag: '🇳🇱' },
+            { name: 'Suíça', code: '+41', flag: '🇨🇭' },
+            { name: 'Bélgica', code: '+32', flag: '🇧🇪' }
+        ];
+
+        // País selecionado (Brasil por padrão)
+        let selectedCountry = countries[0];
+
+        // Preencher o dropdown de países
+        const countryDropdown = document.getElementById('country-dropdown');
+        countries.forEach(country => {
+            const item = document.createElement('div');
+            item.className = 'country-item';
+            item.innerHTML = `
+                <span class="flag">${country.flag}</span>
+                <span class="country-name">${country.name}</span>
+                <span class="country-code">${country.code}</span>
+            `;
+            item.addEventListener('click', () => {
+                selectedCountry = country;
+                updateSelectedCountry();
+                countryDropdown.classList.remove('active');
+                updatePhonePlaceholder();
+            });
+            countryDropdown.appendChild(item);
+        });
+
+        // Atualizar o país selecionado
+        function updateSelectedCountry() {
+            const selectedCountryEl = document.getElementById('selected-country');
+            selectedCountryEl.innerHTML = `
+                <span class="flag">${selectedCountry.flag}</span>
+                <span class="code">${selectedCountry.code}</span>
+                <i class="fas fa-chevron-down"></i>
+            `;
+        }
+
+        // Atualizar placeholder do telefone conforme o país
+        function updatePhonePlaceholder() {
+            const phoneInput = document.getElementById('phone');
+            if (selectedCountry.code === '+55') {
+                phoneInput.placeholder = '(XX) 9 XXXX-XXXX';
+            } else {
+                phoneInput.placeholder = 'Digite o número de telefone';
+            }
+        }
+
+        // Abrir/fechar o dropdown
+        document.getElementById('selected-country').addEventListener('click', () => {
+            countryDropdown.classList.toggle('active');
+        });
+
+        // Fechar o dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.country-selector')) {
+                countryDropdown.classList.remove('active');
+            }
+        });
+
+        // Formatação do telefone (apenas para Brasil)
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', (e) => {
+            if (selectedCountry.code === '+55') {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+
+                if (value.length > 0) {
+                    formattedValue = '(' + value.substring(0, 2);
+                }
+                if (value.length >= 3) {
+                    formattedValue += ') ' + value.substring(2, 3);
+                }
+                if (value.length >= 4) {
+                    formattedValue += ' ' + value.substring(3, 7);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(7, 11);
+                }
+
+                e.target.value = formattedValue;
+            }
+        });
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
