@@ -311,6 +311,7 @@
         .selected-country .flag {
             font-size: 20px;
             margin-right: 8px;
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "EmojiSymbols", "EmojiOne", sans-serif;
         }
         
         .selected-country .code {
@@ -359,6 +360,7 @@
         .country-item .flag {
             font-size: 20px;
             margin-right: 10px;
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "EmojiSymbols", "EmojiOne", sans-serif;
         }
         
         .country-item .country-name {
@@ -893,11 +895,24 @@
         countries.forEach(country => {
             const item = document.createElement('div');
             item.className = 'country-item';
-            item.innerHTML = `
-                <span class="flag">${country.flag}</span>
-                <span class="country-name">${country.name}</span>
-                <span class="country-code">${country.code}</span>
-            `;
+            
+            // Criar elementos separadamente para garantir a ordem correta
+            const flagSpan = document.createElement('span');
+            flagSpan.className = 'flag';
+            flagSpan.textContent = country.flag;
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'country-name';
+            nameSpan.textContent = country.name;
+            
+            const codeSpan = document.createElement('span');
+            codeSpan.className = 'country-code';
+            codeSpan.textContent = country.code;
+            
+            item.appendChild(flagSpan);
+            item.appendChild(nameSpan);
+            item.appendChild(codeSpan);
+            
             item.addEventListener('click', () => {
                 selectedCountry = country;
                 updateSelectedCountry();
@@ -910,11 +925,23 @@
         // Atualizar o país selecionado
         function updateSelectedCountry() {
             const selectedCountryEl = document.getElementById('selected-country');
-            selectedCountryEl.innerHTML = `
-                <span class="flag">${selectedCountry.flag}</span>
-                <span class="code">${selectedCountry.code}</span>
-                <i class="fas fa-chevron-down"></i>
-            `;
+            selectedCountryEl.innerHTML = '';
+            
+            // Criar elementos separadamente para garantir a ordem correta
+            const flagSpan = document.createElement('span');
+            flagSpan.className = 'flag';
+            flagSpan.textContent = selectedCountry.flag;
+            
+            const codeSpan = document.createElement('span');
+            codeSpan.className = 'code';
+            codeSpan.textContent = selectedCountry.code;
+            
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-chevron-down';
+            
+            selectedCountryEl.appendChild(flagSpan);
+            selectedCountryEl.appendChild(codeSpan);
+            selectedCountryEl.appendChild(icon);
         }
 
         // Atualizar placeholder do telefone conforme o país
