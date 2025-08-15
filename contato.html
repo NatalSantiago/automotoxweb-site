@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --primary: #FF6B00;
@@ -572,26 +571,29 @@
             <div class="contact-container">
                 <div class="contact-form">
                     <h2>Envie-nos uma mensagem</h2>
-                    <form id="contact-form">
+                    <form id="contact-form" name="contato" method="POST" data-netlify="true">
+                        <!-- Campo oculto necessário para o Netlify Forms -->
+                        <input type="hidden" name="form-name" value="contato">
+                        
                         <div class="form-group">
                             <label for="name">Nome Completo</label>
-                            <input type="text" id="name" class="form-control" required>
+                            <input type="text" id="name" name="name" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" class="form-control" required>
+                            <input type="email" id="email" name="email" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Telefone</label>
-                            <input type="tel" id="phone" class="form-control" required>
+                            <input type="tel" id="phone" name="phone" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="subject">Assunto</label>
-                            <input type="text" id="subject" class="form-control" required>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="message">Mensagem</label>
-                            <textarea id="message" class="form-control" required></textarea>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
                         </div>
                         <button type="submit" class="btn" id="submit-btn">
                             Enviar Mensagem
@@ -727,9 +729,6 @@
     </footer>
     
     <script>
-        // Inicializar o EmailJS com sua chave pública
-        emailjs.init('pglVpdoMlK_TRMk-r');
-        
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
@@ -788,59 +787,21 @@
             spinner.style.display = 'inline-block';
             submitBtn.disabled = true;
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            // Criar FormData para enviar o formulário
+            const formData = new FormData(contactForm);
             
-            // Log para depuração
-            console.log('Enviando formulário...');
-            console.log('Nome:', name);
-            console.log('Email:', email);
-            console.log('Telefone:', phone);
-            console.log('Assunto:', subject);
-            console.log('Mensagem:', message);
-            
-            // 1. Enviar auto-resposta para o usuário
-            const autoReplyParams = {
-                to_email: email,
-                from_name: 'AutoMotoXweb',
-                user_name: name,
-                user_subject: subject
-            };
-            
-            console.log('Parâmetros da auto-resposta:', autoReplyParams);
-            
-            // 2. Enviar dados do formulário para o email natal.santiago.automotoxweb@gmail.com
-            const formDataParams = {
-                to_email: 'natal.santiago.automotoxweb@gmail.com',
-                from_name: name,
-                from_email: email,
-                phone: phone,
-                subject: subject,
-                message: message,
-                reply_to: email
-            };
-            
-            console.log('Parâmetros do formulário:', formDataParams);
-            
-            // Enviar auto-resposta para o usuário
-            emailjs.send('service_wq6d36q', 'template_8kbi8qb', autoReplyParams)
-                .then(function(response) {
-                    console.log('Auto-resposta enviada com sucesso:', response);
-                    
-                    // Enviar dados do formulário para o email natal.santiago.automotoxweb@gmail.com
-                    return emailjs.send('service_wq6d36q', 'template_formulario', formDataParams);
-                })
-                .then(function(response) {
-                    console.log('Dados do formulário enviados com sucesso:', response);
-                    
-                    // Hide spinner
-                    spinner.style.display = 'none';
-                    submitBtn.disabled = false;
-                    
+            // Enviar formulário via AJAX para o Netlify
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Hide spinner
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Verificar se a resposta foi bem-sucedida
+                if (response.ok) {
                     // Show success message with SweetAlert
                     Swal.fire({
                         title: 'Mensagem Enviada!',
@@ -857,23 +818,7 @@
                     
                     // Reset form
                     contactForm.reset();
-                })
-                .catch(function(error) {
-                    // Hide spinner
-                    spinner.style.display = 'none';
-                    submitBtn.disabled = false;
-                    
-                    console.error('Erro detalhado do EmailJS:', error);
-                    
-                    // Mostrar detalhes do erro para depuração
-                    if (error.text) {
-                        console.error('Texto do erro:', error.text);
-                    }
-                    
-                    if (error.status) {
-                        console.error('Status do erro:', error.status);
-                    }
-                    
+                } else {
                     // Show error message with SweetAlert
                     Swal.fire({
                         title: 'Erro!',
@@ -882,7 +827,24 @@
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#FF6B00'
                     });
+                }
+            })
+            .catch(error => {
+                // Hide spinner
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                console.error('Erro:', error);
+                
+                // Show error message with SweetAlert
+                Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#FF6B00'
                 });
+            });
         });
     </script>
 </body>
