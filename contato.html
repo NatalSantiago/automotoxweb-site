@@ -711,7 +711,7 @@
                             <div class="phone-input-container">
                                 <div class="country-selector">
                                     <div class="selected-country" id="selected-country">
-                                        <span class="flag" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwOWMzYiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHBhdGggZmlsbD0iI2ZmZGcwMCIgZD0iTTAgMGg5djIwSDB6bTIxIDBoOXYyMGgtOXoiLz48cGF0aCBmaWxsPSIjZmZkZjAwIiBkPSJNOSAwaDEydjIwSDl6Ii8+PC9zdmc+'); background-size: cover; width: 24px; height: 18px; display: inline-block;"></span>
+                                        <img src="https://flagcdn.com/w40/br.png" alt="Bandeira do Brasil" class="flag">
                                         <span class="code">+55</span>
                                         <i class="fas fa-chevron-down"></i>
                                     </div>
@@ -864,37 +864,58 @@
     </footer>
     
     <script>
-        // Lista de países com bandeiras em base64 e códigos
+        // Lista de países com bandeiras e códigos
         const countries = [
-            { name: 'Brasil', code: '+55', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwOWMzYiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHBhdGggZmlsbD0iI2ZmZGcwMCIgZD0iTTAgMGg5djIwSDB6bTIxIDBoOXYyMGgtOXoiLz48cGF0aCBmaWxsPSIjZmZkZjAwIiBkPSJNOSAwaDEydjIwSDl6Ii8+PC9zdmc+' },
-            { name: 'Argentina', code: '+54', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzc1YWFkYyIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSIxMyIgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48L3N2Zz4=' },
-            { name: 'Chile', code: '+56', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iIzAwN2EzZCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSIxMyIgZmlsbD0iIzAwN2EzZCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48L3N2Zz4=' },
-            { name: 'Equador', code: '+593', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSI3IiBmaWxsPSIjMDA5YjNkIiB3aWR0aD0iMzAiIGhlaWdodD0iNiIvPjxyZWN0IHk9IjEzIiBmaWxsPSIjZmZkNzAwIiB3aWR0aD0iMzAiIGhlaWdodD0iNyIvPjwvc3ZnPg==' },
-            { name: 'Venezuela', code: '+58', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmY2UwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSI3IiBmaWxsPSIjMDAzODk3IiB3aWR0aD0iMzAiIGhlaWdodD0iNiIvPjxyZWN0IHk9IjEzIiBmaWxsPSIjMDA5YjNkIiB3aWR0aD0iMzAiIGhlaWdodD0iNyIvPjwvc3ZnPg==' },
-            { name: 'Paraguai', code: '+595', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iIzAwM2I4ZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSIxMyIgZmlsbD0iIzAwM2I4ZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48L3N2Zz4=' },
-            { name: 'Uruguai', code: '+598', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iIzAwM2I4ZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSIxMyIgZmlsbD0iIzAwM2I4ZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48L3N2Zz4=' },
-            { name: 'Estados Unidos', code: '+1', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2IyMjIzNCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHBhdGggZmlsbD0iI2UzMTgxYyIgZD0iTTAgMGg5djIwSDB6bTIxIDBoOXYyMGgtOXoiLz48L3N2Zz4=' },
-            { name: 'Reino Unido', code: '+44', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAxMjE2OSIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMGg5djIwSDB6bTIxIDBoOXYyMGgtOXoiLz48L3N2Zz4=' },
-            { name: 'Portugal', code: '+351', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmMDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iIzAwNzYxZCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjIwIi8+PC9zdmc+' },
-            { name: 'Espanha', code: '+34', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2FhMWU1NSIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48cmVjdCB5PSIxNiIgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48L3N2Zz4=' },
-            { name: 'França', code: '+33', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwMzljYyIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgeD0iMTAiIGZpbGw9IiNmZmYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjIwIiBmaWxsPSIjZWRjZjAwIiB3aWR0aD0iMTAiIGhlaWdodD0iMjAiLz48L3N2Zz4=' },
-            { name: 'Alemanha', code: '+49', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2JmMDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSI3IiBmaWxsPSIjZmZmIiB3aWR0aD0iMzAiIGhlaWdodD0iNiIvPjxyZWN0IHk9IjEzIiBmaWxsPSIjMDA5YjNkIiB3aWR0aD0iMzAiIGhlaWdodD0iNyIvPjwvc3ZnPg==' },
-            { name: 'Itália', code: '+39', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwOWM0NiIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgeD0iMTAiIGZpbGw9IiNmZmYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjIwIiBmaWxsPSIjY2UyYjM3IiB3aWR0aD0iMTAiIGhlaWdodD0iMjAiLz48L3N2Zz4=' },
-            { name: 'Japão', code: '+81', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PGNpcmNsZSBjeD0iMTUiIGN5PSIxMCIgcj0iNiIgZmlsbD0iI2JjMDAyZCIvPjwvc3ZnPg==' },
-            { name: 'China', code: '+86', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2RlMjkxMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PC9zdmc+' },
-            { name: 'Canadá', code: '+1', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iI2ZmMDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48cmVjdCB5PSIxNiIgZmlsbD0iI2ZmMDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48L3N2Zz4=' },
-            { name: 'Austrália', code: '+61', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwMzk0YyIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMGg5djIwSDB6bTIxIDBoOXYyMGgtOXoiLz48L3N2Zz4=' },
-            { name: 'México', code: '+52', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iIzAwNjg0NyIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSI3IiBmaWxsPSIjZmZmIiB3aWR0aD0iMzAiIGhlaWdodD0iNiIvPjxyZWN0IHk9IjEzIiBmaWxsPSIjMDA2ODQ3IiB3aWR0aD0iMzAiIGhlaWdodD0iNyIvPjwvc3ZnPg==' },
-            { name: 'Índia', code: '+91', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmOTkzMzMiIHdpZHRoPSIzMCIgaGVpZ2h0PSI3Ii8+PHJlY3QgeT0iNyIgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjYiLz48cmVjdCB5PSIxMyIgZmlsbD0iIzEzODgwOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48L3N2Zz4=' },
-            { name: 'Rússia', code: '+7', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjciLz48cmVjdCB5PSI3IiBmaWxsPSIjMDAzOTk5IiB3aWR0aD0iMzAiIGhlaWdodD0iNiIvPjxyZWN0IHk9IjEzIiBmaWxsPSIjZDAwMDAwIiB3aWR0aD0iMzAiIGhlaWdodD0iNyIvPjwvc3ZnPg==' },
-            { name: 'Coreia do Sul', code: '+82', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PGNpcmNsZSBjeD0iMTUiIGN5PSIxMCIgcj0iNiIgZmlsbD0iI2VkMWMyNCIvPjwvc3ZnPg==' },
-            { name: 'Países Baixos', code: '+31', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2FmMTkwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48cmVjdCB5PSI4IiBmaWxsPSIjZmZmIiB3aWR0aD0iMzAiIGhlaWdodD0iNCIvPjxyZWN0IHk9IjE2IiBmaWxsPSIjZmZmIiB3aWR0aD0iMzAiIGhlaWdodD0iNCIvPjwvc3ZnPg==' },
-            { name: 'Suíça', code: '+41', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2ZmZiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgZmlsbD0iI2ZmMDAwMCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjQiLz48cmVjdCB5PSI4IiBmaWxsPSIjZmYwMDAwIiB3aWR0aD0iMzAiIGhlaWdodD0iNCIvPjxyZWN0IHk9IjE2IiBmaWxsPSIjZmYwMDAwIiB3aWR0aD0iMzAiIGhlaWdodD0iNCIvPjwvc3ZnPg==' },
-            { name: 'Bélgica', code: '+32', flag: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAyMCI+PHJlY3QgZmlsbD0iI2JmMjQyNCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIi8+PHJlY3QgeD0iMTAiIGZpbGw9IiNmZmYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjIwIiBmaWxsPSIjZmZkNzAwIiB3aWR0aD0iMTAiIGhlaWdodD0iMjAiLz48L3N2Zz4=' }
+            { name: 'Brasil', code: '+55', iso: 'br' },
+            { name: 'Argentina', code: '+54', iso: 'ar' },
+            { name: 'Chile', code: '+56', iso: 'cl' },
+            { name: 'Equador', code: '+593', iso: 'ec' },
+            { name: 'Venezuela', code: '+58', iso: 've' },
+            { name: 'Paraguai', code: '+595', iso: 'py' },
+            { name: 'Uruguai', code: '+598', iso: 'uy' },
+            { name: 'Estados Unidos', code: '+1', iso: 'us' },
+            { name: 'Reino Unido', code: '+44', iso: 'gb' },
+            { name: 'Portugal', code: '+351', iso: 'pt' },
+            { name: 'Espanha', code: '+34', iso: 'es' },
+            { name: 'França', code: '+33', iso: 'fr' },
+            { name: 'Alemanha', code: '+49', iso: 'de' },
+            { name: 'Itália', code: '+39', iso: 'it' },
+            { name: 'Japão', code: '+81', iso: 'jp' },
+            { name: 'China', code: '+86', iso: 'cn' },
+            { name: 'Canadá', code: '+1', iso: 'ca' },
+            { name: 'Austrália', code: '+61', iso: 'au' },
+            { name: 'México', code: '+52', iso: 'mx' },
+            { name: 'Índia', code: '+91', iso: 'in' },
+            { name: 'Rússia', code: '+7', iso: 'ru' },
+            { name: 'Coreia do Sul', code: '+82', iso: 'kr' },
+            { name: 'Países Baixos', code: '+31', iso: 'nl' },
+            { name: 'Suíça', code: '+41', iso: 'ch' },
+            { name: 'Bélgica', code: '+32', iso: 'be' }
         ];
 
         // País selecionado (Brasil por padrão)
         let selectedCountry = countries[0];
+
+        // Função para criar elemento de bandeira com tratamento de erro
+        function createFlagElement(country) {
+            const flagImg = document.createElement('img');
+            flagImg.className = 'flag';
+            flagImg.src = `https://flagcdn.com/w40/${country.iso}.png`;
+            flagImg.alt = `Bandeira de ${country.name}`;
+            
+            // Adicionar tratamento de erro para carregamento da imagem
+            flagImg.onerror = function() {
+                // Se falhar, tentar com outro domínio
+                this.src = `https://flagpedia.net/data/flags/w40/${country.iso}.png`;
+                
+                // Se falhar novamente, usar um placeholder
+                this.onerror = function() {
+                    this.src = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAxOCI+PHJlY3QgZmlsbD0iI2RkZCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjE4Ii8+PHRleHQgeD0iMTIiIHk9IjEyIiBmb250LXNpemU9IjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPjwvdGV4dD48L3N2Zz4=`;
+                };
+            };
+            
+            return flagImg;
+        }
 
         // Preencher o dropdown de países
         const countryDropdown = document.getElementById('country-dropdown');
@@ -903,13 +924,7 @@
             item.className = 'country-item';
             
             // Criar elementos separadamente para garantir a ordem correta
-            const flagSpan = document.createElement('span');
-            flagSpan.className = 'flag';
-            flagSpan.style.backgroundImage = `url('${country.flag}')`;
-            flagSpan.style.backgroundSize = 'cover';
-            flagSpan.style.width = '24px';
-            flagSpan.style.height = '18px';
-            flagSpan.style.display = 'inline-block';
+            const flagImg = createFlagElement(country);
             
             const nameSpan = document.createElement('span');
             nameSpan.className = 'country-name';
@@ -919,7 +934,7 @@
             codeSpan.className = 'country-code';
             codeSpan.textContent = country.code;
             
-            item.appendChild(flagSpan);
+            item.appendChild(flagImg);
             item.appendChild(nameSpan);
             item.appendChild(codeSpan);
             
@@ -938,13 +953,7 @@
             selectedCountryEl.innerHTML = '';
             
             // Criar elementos separadamente para garantir a ordem correta
-            const flagSpan = document.createElement('span');
-            flagSpan.className = 'flag';
-            flagSpan.style.backgroundImage = `url('${selectedCountry.flag}')`;
-            flagSpan.style.backgroundSize = 'cover';
-            flagSpan.style.width = '24px';
-            flagSpan.style.height = '18px';
-            flagSpan.style.display = 'inline-block';
+            const flagImg = createFlagElement(selectedCountry);
             
             const codeSpan = document.createElement('span');
             codeSpan.className = 'code';
@@ -953,7 +962,7 @@
             const icon = document.createElement('i');
             icon.className = 'fas fa-chevron-down';
             
-            selectedCountryEl.appendChild(flagSpan);
+            selectedCountryEl.appendChild(flagImg);
             selectedCountryEl.appendChild(codeSpan);
             selectedCountryEl.appendChild(icon);
         }
