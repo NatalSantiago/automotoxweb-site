@@ -799,8 +799,8 @@
                                 </div>
                                 <input type="tel" id="phone" name="phone" class="form-control phone-number" placeholder="(XX) 9 XXXX-XXXX" required>
                             </div>
-                            <!-- Campo oculto para armazenar o código do país -->
-                            <input type="hidden" id="country-code" name="country-code" value="+55">
+                            <!-- Campo oculto para armazenar o código do país com o nome -->
+                            <input type="hidden" id="country-code" name="country-code" value="+55 - Brasil">
                         </div>
                         
                         <div class="form-group">
@@ -1058,10 +1058,10 @@
             selectedCountryEl.appendChild(icon);
         }
 
-        // Atualizar o campo oculto do código do país
+        // Atualizar o campo oculto do código do país com o nome do país
         function updateCountryCode() {
             const countryCodeField = document.getElementById('country-code');
-            countryCodeField.value = selectedCountry.code;
+            countryCodeField.value = selectedCountry.code + ' - ' + selectedCountry.name;
         }
 
         // Atualizar placeholder do telefone conforme o país
@@ -1320,7 +1320,7 @@
             const countryCodeField = document.getElementById('country-code');
             
             // Combinar código do país com o número de telefone
-            const fullPhoneNumber = countryCodeField.value + ' ' + phoneField.value;
+            const fullPhoneNumber = countryCodeField.value.split(' - ')[0] + ' ' + phoneField.value;
             
             // Atualizar o valor do campo de telefone antes do envio
             phoneField.value = fullPhoneNumber;
@@ -1362,7 +1362,7 @@
                     phoneField.value = '';
                 } else {
                     // Restaurar o valor do campo de telefone para o formato original
-                    phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
+                    phoneField.value = phoneField.value.replace(countryCodeField.value.split(' - ')[0] + ' ', '');
                     
                     // Show error message with SweetAlert
                     Swal.fire({
@@ -1380,7 +1380,7 @@
                 submitBtn.disabled = false;
                 
                 // Restaurar o valor do campo de telefone para o formato original
-                phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
+                phoneField.value = phoneField.value.replace(countryCodeField.value.split(' - ')[0] + ' ', '');
                 
                 console.error('Erro:', error);
                 
