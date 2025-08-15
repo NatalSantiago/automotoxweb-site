@@ -294,6 +294,111 @@
             resize: vertical;
         }
         
+        /* Phone Input Styles */
+        .phone-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .country-selector {
+            position: relative;
+            margin-right: 10px;
+            z-index: 10;
+        }
+        
+        .selected-country {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: border-color 0.3s;
+            min-width: 120px;
+        }
+        
+        .selected-country:hover {
+            border-color: var(--primary);
+        }
+        
+        .selected-country .flag {
+            width: 24px;
+            height: 18px;
+            margin-right: 8px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+        
+        .selected-country .code {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .selected-country i {
+            margin-left: auto;
+            font-size: 12px;
+        }
+        
+        .country-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            margin-top: 5px;
+            width: 350px;
+        }
+        
+        .country-dropdown.active {
+            display: block;
+        }
+        
+        .country-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .country-item:hover {
+            background-color: rgba(255, 107, 0, 0.1);
+        }
+        
+        .country-item .flag {
+            width: 24px;
+            height: 18px;
+            margin-right: 10px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+        
+        .country-item .country-name {
+            flex: 1;
+            color: var(--text-color);
+        }
+        
+        .country-item .country-code {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .phone-number {
+            flex: 1;
+        }
+        
         .file-upload {
             position: relative;
             display: inline-block;
@@ -567,6 +672,24 @@
             .info-card {
                 padding: 20px;
             }
+            
+            .phone-input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .country-selector {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .selected-country {
+                justify-content: center;
+            }
+            
+            .country-dropdown {
+                width: 100%;
+            }
         }
         
         @media (max-width: 576px) {
@@ -663,7 +786,21 @@
                         
                         <div class="form-group">
                             <label for="phone">Telefone/WhatsApp</label>
-                            <input type="tel" id="phone" name="phone" class="form-control" required>
+                            <div class="phone-input-container">
+                                <div class="country-selector">
+                                    <div class="selected-country" id="selected-country">
+                                        <img src="https://flagcdn.com/w40/br.png" alt="Bandeira do Brasil" class="flag">
+                                        <span class="code">+55</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="country-dropdown" id="country-dropdown">
+                                        <!-- Lista de países será preenchida via JavaScript -->
+                                    </div>
+                                </div>
+                                <input type="tel" id="phone" name="phone" class="form-control phone-number" placeholder="(XX) 9 XXXX-XXXX" required>
+                            </div>
+                            <!-- Campo oculto para armazenar o código do país -->
+                            <input type="hidden" id="country-code" name="country-code" value="+55">
                         </div>
                         
                         <div class="form-group">
@@ -719,7 +856,7 @@
                         <h3><i class="fas fa-phone-alt"></i> Contato</h3>
                         <div class="info-item">
                             <i class="fas fa-phone"></i>
-                            <p><span>Telefone</span> (63) 9 9225-9154</p>
+                            <p><span>Telefone</span> +55 (63) 9 9225-9154</p>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-envelope"></i>
@@ -727,7 +864,7 @@
                         </div>
                         <div class="info-item">
                             <i class="fab fa-whatsapp"></i>
-                            <p><span>WhatsApp</span> (63) 9 9225-9154</p>
+                            <p><span>WhatsApp</span> +55 (63) 9 9225-9154</p>
                         </div>
                     </div>
                     
@@ -739,7 +876,7 @@
                         </div>
                         <div class="info-item">
                             <i class="far fa-calendar"></i>
-                            <p><span>Sábado</span> 08:00 - 12:00</p>
+                            <p><span>Sábado</span> 08:00 -1212:00</p>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-info-circle"></i>
@@ -804,7 +941,7 @@
                 <div class="footer-column">
                     <h3>Contato</h3>
                     <ul>
-                        <li><i class="fas fa-phone"></i> (63) 9 9225-9154</li>
+                        <li><i class="fas fa-phone"></i> +55 (63) 9 9225-9154</li>
                         <li><i class="fas fa-envelope"></i> natal.santiago.automotoxweb@gmail.com</li>
                         <li><i class="fas fa-map-marker-alt"></i> Avenida Castelo Branco, 199, Vila Vitória, Imperatriz - MA</li>
                     </ul>
@@ -817,6 +954,162 @@
     </footer>
     
     <script>
+        // Lista de países com bandeiras e códigos
+        const countries = [
+            { name: 'Brasil', code: '+55', iso: 'br' },
+            { name: 'Argentina', code: '+54', iso: 'ar' },
+            { name: 'Chile', code: '+56', iso: 'cl' },
+            { name: 'Equador', code: '+593', iso: 'ec' },
+            { name: 'Venezuela', code: '+58', iso: 've' },
+            { name: 'Paraguai', code: '+595', iso: 'py' },
+            { name: 'Uruguai', code: '+598', iso: 'uy' },
+            { name: 'Estados Unidos', code: '+1', iso: 'us' },
+            { name: 'Reino Unido', code: '+44', iso: 'gb' },
+            { name: 'Portugal', code: '+351', iso: 'pt' },
+            { name: 'Espanha', code: '+34', iso: 'es' },
+            { name: 'França', code: '+33', iso: 'fr' },
+            { name: 'Alemanha', code: '+49', iso: 'de' },
+            { name: 'Itália', code: '+39', iso: 'it' },
+            { name: 'Japão', code: '+81', iso: 'jp' },
+            { name: 'China', code: '+86', iso: 'cn' },
+            { name: 'Canadá', code: '+1', iso: 'ca' },
+            { name: 'Austrália', code: '+61', iso: 'au' },
+            { name: 'México', code: '+52', iso: 'mx' },
+            { name: 'Índia', code: '+91', iso: 'in' },
+            { name: 'Rússia', code: '+7', iso: 'ru' },
+            { name: 'Coreia do Sul', code: '+82', iso: 'kr' },
+            { name: 'Países Baixos', code: '+31', iso: 'nl' },
+            { name: 'Suíça', code: '+41', iso: 'ch' },
+            { name: 'Bélgica', code: '+32', iso: 'be' }
+        ];
+
+        // País selecionado (Brasil por padrão)
+        let selectedCountry = countries[0];
+
+        // Função para criar elemento de bandeira com tratamento de erro
+        function createFlagElement(country) {
+            const flagImg = document.createElement('img');
+            flagImg.className = 'flag';
+            flagImg.src = `https://flagcdn.com/w40/${country.iso}.png`;
+            flagImg.alt = `Bandeira de ${country.name}`;
+            
+            // Adicionar tratamento de erro para carregamento da imagem
+            flagImg.onerror = function() {
+                // Se falhar, tentar com outro domínio
+                this.src = `https://flagpedia.net/data/flags/w40/${country.iso}.png`;
+                
+                // Se falhar novamente, usar um placeholder
+                this.onerror = function() {
+                    this.src = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAxOCI+PHJlY3QgZmlsbD0iI2RkZCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjE4Ii8+PHRleHQgeD0iMTIiIHk9IjEyIiBmb250LXNpemU9IjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPjwvdGV4dD48L3N2Zz4=`;
+                };
+            };
+            
+            return flagImg;
+        }
+
+        // Preencher o dropdown de países
+        const countryDropdown = document.getElementById('country-dropdown');
+        countries.forEach(country => {
+            const item = document.createElement('div');
+            item.className = 'country-item';
+            
+            // Criar elementos separadamente para garantir a ordem correta
+            const flagImg = createFlagElement(country);
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'country-name';
+            nameSpan.textContent = country.name;
+            
+            const codeSpan = document.createElement('span');
+            codeSpan.className = 'country-code';
+            codeSpan.textContent = country.code;
+            
+            item.appendChild(flagImg);
+            item.appendChild(nameSpan);
+            item.appendChild(codeSpan);
+            
+            item.addEventListener('click', () => {
+                selectedCountry = country;
+                updateSelectedCountry();
+                updateCountryCode();
+                countryDropdown.classList.remove('active');
+                updatePhonePlaceholder();
+            });
+            countryDropdown.appendChild(item);
+        });
+
+        // Atualizar o país selecionado
+        function updateSelectedCountry() {
+            const selectedCountryEl = document.getElementById('selected-country');
+            selectedCountryEl.innerHTML = '';
+            
+            // Criar elementos separadamente para garantir a ordem correta
+            const flagImg = createFlagElement(selectedCountry);
+            
+            const codeSpan = document.createElement('span');
+            codeSpan.className = 'code';
+            codeSpan.textContent = selectedCountry.code;
+            
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-chevron-down';
+            
+            selectedCountryEl.appendChild(flagImg);
+            selectedCountryEl.appendChild(codeSpan);
+            selectedCountryEl.appendChild(icon);
+        }
+
+        // Atualizar o campo oculto do código do país
+        function updateCountryCode() {
+            const countryCodeField = document.getElementById('country-code');
+            countryCodeField.value = selectedCountry.code;
+        }
+
+        // Atualizar placeholder do telefone conforme o país
+        function updatePhonePlaceholder() {
+            const phoneInput = document.getElementById('phone');
+            if (selectedCountry.code === '+55') {
+                phoneInput.placeholder = '(XX) 9 XXXX-XXXX';
+            } else {
+                phoneInput.placeholder = 'Digite o número de telefone';
+            }
+        }
+
+        // Abrir/fechar o dropdown
+        document.getElementById('selected-country').addEventListener('click', () => {
+            countryDropdown.classList.toggle('active');
+        });
+
+        // Fechar o dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.country-selector')) {
+                countryDropdown.classList.remove('active');
+            }
+        });
+
+        // Formatação do telefone (apenas para Brasil)
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', (e) => {
+            if (selectedCountry.code === '+55') {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+
+                if (value.length > 0) {
+                    formattedValue = '(' + value.substring(0, 2);
+                }
+                if (value.length >= 3) {
+                    formattedValue += ') ' + value.substring(2, 3);
+                }
+                if (value.length >= 4) {
+                    formattedValue += ' ' + value.substring(3, 7);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(7, 11);
+                }
+
+                e.target.value = formattedValue;
+            }
+        });
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
@@ -1022,6 +1315,16 @@
             spinner.style.display = 'inline-block';
             submitBtn.disabled = true;
             
+            // Obter o valor do campo de telefone
+            const phoneField = document.getElementById('phone');
+            const countryCodeField = document.getElementById('country-code');
+            
+            // Combinar código do país com o número de telefone
+            const fullPhoneNumber = countryCodeField.value + ' ' + phoneField.value;
+            
+            // Atualizar o valor do campo de telefone antes do envio
+            phoneField.value = fullPhoneNumber;
+            
             // Criar FormData para enviar o formulário com arquivo
             const formData = new FormData(solicitationForm);
             
@@ -1055,7 +1358,12 @@
                     solicitationForm.reset();
                     fileName.textContent = 'Nenhum arquivo selecionado';
                     cpfCnpjInput.classList.remove('is-invalid');
+                    // Restaurar o valor do campo de telefone para o formato original
+                    phoneField.value = '';
                 } else {
+                    // Restaurar o valor do campo de telefone para o formato original
+                    phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
+                    
                     // Show error message with SweetAlert
                     Swal.fire({
                         title: 'Erro!',
@@ -1070,6 +1378,9 @@
                 // Hide spinner
                 spinner.style.display = 'none';
                 submitBtn.disabled = false;
+                
+                // Restaurar o valor do campo de telefone para o formato original
+                phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
                 
                 console.error('Erro:', error);
                 
