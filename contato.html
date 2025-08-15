@@ -721,6 +721,8 @@
                                 </div>
                                 <input type="tel" id="phone" name="phone" class="form-control phone-number" placeholder="(XX) 9 XXXX-XXXX" required>
                             </div>
+                            <!-- Campo oculto para armazenar o código do país -->
+                            <input type="hidden" id="country-code" name="country-code" value="+55">
                         </div>
                         <div class="form-group">
                             <label for="subject">Assunto</label>
@@ -941,6 +943,7 @@
             item.addEventListener('click', () => {
                 selectedCountry = country;
                 updateSelectedCountry();
+                updateCountryCode();
                 countryDropdown.classList.remove('active');
                 updatePhonePlaceholder();
             });
@@ -965,6 +968,12 @@
             selectedCountryEl.appendChild(flagImg);
             selectedCountryEl.appendChild(codeSpan);
             selectedCountryEl.appendChild(icon);
+        }
+
+        // Atualizar o campo oculto do código do país
+        function updateCountryCode() {
+            const countryCodeField = document.getElementById('country-code');
+            countryCodeField.value = selectedCountry.code;
         }
 
         // Atualizar placeholder do telefone conforme o país
@@ -1071,6 +1080,16 @@
             spinner.style.display = 'inline-block';
             submitBtn.disabled = true;
             
+            // Obter o valor do campo de telefone
+            const phoneField = document.getElementById('phone');
+            const countryCodeField = document.getElementById('country-code');
+            
+            // Combinar código do país com o número de telefone
+            const fullPhoneNumber = countryCodeField.value + ' ' + phoneField.value;
+            
+            // Atualizar o valor do campo de telefone antes do envio
+            phoneField.value = fullPhoneNumber;
+            
             // Criar FormData para enviar o formulário
             const formData = new FormData(contactForm);
             
@@ -1102,7 +1121,12 @@
                     
                     // Reset form
                     contactForm.reset();
+                    // Restaurar o valor do campo de telefone para o formato original
+                    phoneField.value = '';
                 } else {
+                    // Restaurar o valor do campo de telefone para o formato original
+                    phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
+                    
                     // Show error message with SweetAlert
                     Swal.fire({
                         title: 'Erro!',
@@ -1117,6 +1141,9 @@
                 // Hide spinner
                 spinner.style.display = 'none';
                 submitBtn.disabled = false;
+                
+                // Restaurar o valor do campo de telefone para o formato original
+                phoneField.value = phoneField.value.replace(countryCodeField.value + ' ', '');
                 
                 console.error('Erro:', error);
                 
